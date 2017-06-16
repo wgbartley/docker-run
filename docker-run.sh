@@ -27,6 +27,13 @@ if [ $is_exists -eq 1 ]; then
 	CMD="docker ps -f status=running | grep \"${CONTAINER}\" | wc -l"
 	do_cmd "${CMD}"
 	is_running=`eval $CMD`
+	
+	# Check if the container is restarting
+	if [ $is_running -eq 0 ]; then
+		CMD="docker ps -f status=restarting | grep \"${CONTAINER}\" | wc -l"
+		do_cmd "${CMD}"
+		is_running=`eval $CMD`
+	fi
 
 	if [ $is_running -eq 1 ]; then
 		echo -n "${CONTAINER} is running.  Stopping  . . ."
